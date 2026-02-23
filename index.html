@@ -2,33 +2,39 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>Logikk-låsen</title>
+<title>Sikkerhetsmodul</title>
 
 <style>
 body {
-  background:#0f141a;
+  background: radial-gradient(circle at center, #0f2027, #0a0f14 80%);
   display:flex;
   justify-content:center;
   align-items:center;
   height:100vh;
-  font-family:Arial, sans-serif;
-  color:white;
+  font-family: "Courier New", monospace;
+  color:#00ffcc;
+  margin:0;
 }
 
 .lock {
-  background:#1c222b;
+  background: rgba(0,0,0,0.9);
   padding:40px;
-  border-radius:20px;
+  border-radius:15px;
   text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,0.6);
-  width:320px;
+  box-shadow:0 0 40px rgba(0,255,200,0.2);
+  width:380px;
+  border:1px solid #00ffcc33;
+}
+
+h2 {
+  letter-spacing:2px;
 }
 
 .display {
   display:flex;
   justify-content:center;
-  gap:20px;
-  margin:20px 0;
+  gap:25px;
+  margin:25px 0;
 }
 
 .column {
@@ -41,56 +47,75 @@ body {
   cursor:pointer;
   font-size:22px;
   user-select:none;
-  margin:5px;
+  color:#00ffcc;
+  transition:0.2s;
+}
+
+.arrow:hover {
+  color:#00ff88;
+  transform:scale(1.2);
 }
 
 .digit {
-  background:#111;
-  width:60px;
-  height:80px;
+  background:black;
+  width:70px;
+  height:90px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:40px;
+  font-size:42px;
   border-radius:10px;
-  margin:5px 0;
+  margin:8px 0;
+  border:1px solid #00ffcc55;
+  box-shadow:0 0 10px #00ffcc33 inset;
 }
 
 button {
-  background:#2ecc71;
-  border:none;
-  padding:12px 30px;
-  font-size:18px;
-  border-radius:10px;
+  background:black;
+  color:#00ffcc;
+  border:1px solid #00ffcc;
+  padding:10px 30px;
+  font-size:16px;
+  border-radius:8px;
   cursor:pointer;
-  margin-top:10px;
+  transition:0.3s;
 }
 
 button:hover {
-  background:#27ae60;
+  background:#00ffcc;
+  color:black;
 }
 
 .message {
-  margin-top:15px;
-  font-weight:bold;
+  margin-top:20px;
   min-height:24px;
-}
-
-.success {
-  color:#2ecc71;
+  font-weight:bold;
 }
 
 .error {
-  color:#e74c3c;
+  color:#ff3b3b;
+  animation:shake 0.3s;
+}
+
+.success {
+  color:#00ff88;
+}
+
+@keyframes shake {
+  0% { transform:translateX(0); }
+  25% { transform:translateX(-5px); }
+  50% { transform:translateX(5px); }
+  75% { transform:translateX(-5px); }
+  100% { transform:translateX(0); }
 }
 
 #nextLink {
   display:none;
-  margin-top:15px;
+  margin-top:20px;
 }
 
 #nextLink a {
-  color:#00d4ff;
+  color:#00ff88;
   text-decoration:none;
   font-weight:bold;
 }
@@ -100,7 +125,8 @@ button:hover {
 <body>
 
 <div class="lock">
-  <h2>🔒 Enkel Matematikk</h2>
+  <h2>🔐 SIKKERHETSMODUL</h2>
+  <p>Angi 3-sifret autorisasjonskode</p>
 
   <div class="display">
 
@@ -124,19 +150,21 @@ button:hover {
 
   </div>
 
-  <button onclick="checkCode()">ÅPNE</button>
+  <button onclick="checkCode()">VERIFISER</button>
 
   <div class="message" id="message"></div>
 
   <div id="nextLink">
-    <a href="https://www.nrk.no/" target="_blank">Gå til neste oppgave ➜</a>
+    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+      ➜ TILGANG GITT – FORTSETT
+    </a>
   </div>
 
 </div>
 
 <script>
 let digits = [0,0,0];
-const correctCode = "042"; // ← ENDRE KODE HER
+const correctCode = "042"; // ← ENDRE KODE HER ----------------------------------------------------------------------------------------------------Du endrer nettside 9 linjer ovenfor-----------------------------
 
 function change(index, direction){
   digits[index] = (digits[index] + direction + 10) % 10;
@@ -147,18 +175,22 @@ function checkCode(){
   const message = document.getElementById("message");
   const nextLink = document.getElementById("nextLink");
 
-  if(digits.join("") === correctCode){
-    message.innerText = "Riktig kode! 🎉";
-    message.className = "message success";
-    nextLink.style.display = "block";
-  } else {
-    message.innerText = "Feil kode, prøv igjen!";
-    message.className = "message error";
-    nextLink.style.display = "none";
-  }
+  message.innerText = "Verifiserer...";
+  message.className = "message";
+
+  setTimeout(() => {
+    if(digits.join("") === correctCode){
+      message.innerText = "✓ RIKTIG KODE";
+      message.className = "message success";
+      nextLink.style.display = "block";
+    } else {
+      message.innerText = "⛔ FEIL KODE";
+      message.className = "message error";
+      nextLink.style.display = "none";
+    }
+  }, 800);
 }
 </script>
 
 </body>
 </html>
-
